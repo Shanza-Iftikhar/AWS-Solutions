@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+set -e
+echo "======= put objects ========"
+
+if [ -z "$1" ]; then
+    echo "Provide bucket name"
+    echo "Usage: $0 <argument>"
+    exit 1
+fi
+
+if [ -z "$2" ]; then
+    echo "Provide file name"
+    echo "Usage: $0 <argument>"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+FILE_NAME=$2
+
+aws s3api put-object --bucket $BUCKET_NAME --body $FILE_NAME --key $OBJECT_KEY

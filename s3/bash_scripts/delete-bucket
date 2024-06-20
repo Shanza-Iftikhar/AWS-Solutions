@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+echo "======= delete bucket ========"
+
+if [ -z "$1" ]; then
+    echo "Provide bucket name"
+    echo "Usage: $0 <argument>"
+    exit 1
+fi
+
+aws s3api delete-bucket --bucket $1 --query Location --output text
+

@@ -1,0 +1,42 @@
+#!/usr/bin/bash
+set -e
+echo "======= sync objects ========"
+
+if [ -z "$1" ]; then
+    echo "Provide bucket name"
+    echo "Usage: $0 <argument>"
+    exit 1
+fi
+
+if [ -z "$2" ]; then
+    echo "Provide file name"
+    echo "Usage: $0 <argument>"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+FILE_NAME=$2
+
+OUTPUT_DIR="/tmp/s3-bashscripts"
+
+rm -r $OUTPUT_DIR
+
+mkdir -p $OUTPUT_DIR
+
+NUM_FILES=$((RANDOM % 6 + 5))
+
+for ((i=1; i<=$NUM_FILES; i++)); do
+    # Create a temporary file
+    random_filename="$OUTPUT_DIR/${FILE_NAME}_$i.txt"
+    
+    
+    # Fill the file with 1 MB of random data
+    dd if=/dev/urandom of=$random_filename bs=1M count=1 status=none
+    
+    # Print the file name
+    echo "Random file created: $file"
+done
+
+tree $OUTPUT_DIR
+
+aws s3 sync $OUTPUT_DIR s3://$BUCKET_NAME/files
